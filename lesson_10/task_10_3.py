@@ -1,29 +1,49 @@
-class Cell:
-    def __init__(self, nums):
-        self.nums = nums
+class CellStorage:
 
-    def make_order(self, rows):
-        return '\n'.join(['*' * rows for _ in range(self.nums // rows)]) + '\n' + '*' * (self.nums % rows)
+    def __init__(self, count: int):
+        if not type(count) is int:
+            raise TypeError(f'Count should be an natural number but got {type(count)}')
+        if count < 0:
+            raise ValueError(f'Count should greater or equal zero but got {type(count)}')
+        self.count = count
 
-    def __str__(self):
-        return str(self.nums)
+    @classmethod
+    def __check_other(cls, other):
+        if not type(other) is cls:
+            raise TypeError(f'Only {cls.__name__} supported but got {type(other)}')
 
     def __add__(self, other):
-        return Cell(self.nums + other.nums)
+        self.__check_other(other)
+        return CellStorage(self.count + other.count)
 
     def __sub__(self, other):
-        return self.nums - other.nums if self.nums - other.nums > 0 \
-            else 'Ячеек в первой клетке меньше или равно второй, вычитание невозможно'
+        self.__check_other(other)
+        return CellStorage(self.count - other.count)
 
     def __mul__(self, other):
-        return 'Multiply of cells is ' + str(self.nums * other.nums)
+        self.__check_other(other)
+        return CellStorage(self.count * other.count)
 
     def __truediv__(self, other):
-        return 'Truediv of cells is ' + str(round(self.nums / other.nums))
+        self.__check_other(other)
+        return CellStorage(self.count//other.count)
 
+    def make_order(self, cells_in_row):
+        end = self.count + self.count // cells_in_row + 1  # count of * + count of \n + border
+        return ''.join('\n' if not x % (cells_in_row + 1) else '*' for x in range(1, end))
 
-cell_1 = Cell(10)
-cell_2 = Cell(34)
-print(cell_1)
-print(cell_1 + cell_2)
-print(cell_2.make_order(33))
+    def __repr__(self):
+        return f'CellStorage({self.count})'
+
+storage = CellStorage(17)
+st2 = CellStorage(2)
+print(storage / st2)
+print(storage - st2)
+print(storage + st2)
+print(storage * st2)
+print(storage.make_order(5))
+print('-'*17)
+print(storage.make_order(7))
+print('-'*17)
+print(storage.make_order(17))
+print('-' * 17)
