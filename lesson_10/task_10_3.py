@@ -9,7 +9,6 @@ class Cell:
         return str(self.nums)
 
     def __add__(self, other):
-        # return 'Sum of cell is ' + str(self.nums + other.nums)
         return Cell(self.nums + other.nums)
 
     def __sub__(self, other):
