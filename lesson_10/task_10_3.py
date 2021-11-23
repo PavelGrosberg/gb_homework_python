@@ -2,15 +2,15 @@ class CellStorage:
 
     def __init__(self, count: int):
         if not type(count) is int:
-            raise TypeError(f'Count should be an natural number but got {type(count)}')
+            raise TypeError(f'Count должно быть натуральным числом, но получено {type(count)}')
         if count < 0:
-            raise ValueError(f'Count should greater or equal zero but got {type(count)}')
+            raise ValueError(f'Count должно быть больше или равно нулю, но получено {type(count)}')
         self.count = count
 
     @classmethod
     def __check_other(cls, other):
         if not type(other) is cls:
-            raise TypeError(f'Only {cls.__name__} supported but got {type(other)}')
+            raise TypeError(f'Поддерживается только {cls.__name__}, но получено {type(other)}')
 
     def __add__(self, other):
         self.__check_other(other)
@@ -29,7 +29,7 @@ class CellStorage:
         return CellStorage(self.count//other.count)
 
     def make_order(self, cells_in_row):
-        end = self.count + self.count // cells_in_row + 1  # count of * + count of \n + border
+        end = self.count + self.count // cells_in_row + 1
         return ''.join('\n' if not x % (cells_in_row + 1) else '*' for x in range(1, end))
 
     def __repr__(self):
